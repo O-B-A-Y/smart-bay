@@ -1,0 +1,119 @@
+{
+  "contractName": "IProposal",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IProposal.sol\":\"IProposal\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IProposal.sol\":{\"keccak256\":\"0xa842b52045ec1f416d6490701edbb511ba4042dc791a56a66c7ef9d0a7417da7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ad597d9592ed72adb3a9f7827f28bcec38c0e0746a4dcc2b79494c325ae4df4f\",\"dweb:/ipfs/QmfAhsTNNGEz16jKAgigauFaTJTySCDqAqQs4Tdj1juUfW\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.0;\n\ninterface IProposal {}\n",
+  "sourcePath": "/Users/chungquantin/Desktop/Projects/DecentralizedOpenSource/smart-bay/contracts/interfaces/IProposal.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IProposal.sol",
+    "exportedSymbols": {
+      "IProposal": [
+        1037
+      ]
+    },
+    "id": 1038,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1036,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:22"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IProposal",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "id": 1037,
+        "linearizedBaseContracts": [
+          1037
+        ],
+        "name": "IProposal",
+        "nameLocation": "68:9:22",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1038,
+        "src": "58:22:22",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:49:22"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/interfaces/IProposal.sol",
+    "exportedSymbols": {
+      "IProposal": [
+        1037
+      ]
+    },
+    "id": 1038,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1036,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:22"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IProposal",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "id": 1037,
+        "linearizedBaseContracts": [
+          1037
+        ],
+        "name": "IProposal",
+        "nameLocation": "68:9:22",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1038,
+        "src": "58:22:22",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:49:22"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.9+commit.e5eed63a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-10-30T09:42:21.641Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

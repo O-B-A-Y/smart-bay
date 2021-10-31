@@ -1,0 +1,80 @@
+{
+	"compiler": {
+		"version": "0.8.0+commit.c7dfd78e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "memberName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "name",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"interfaces/IDao.sol": "IDao"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"interfaces/IDao.sol": {
+			"keccak256": "0x21c885f8ac4948195ec1ce216492b22c9d93a49a3fead2b8a1c9a26107ff7db8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://87708e7daa59cf0c85ffc883cc46c0fd9598648387091dffdcf157aaa0f6a045",
+				"dweb:/ipfs/QmZ9e1ZXZ8CYDjWQjFgLXkBFw19J6GSLn9p4fu65uqNpZK"
+			]
+		},
+		"interfaces/IDaoMember.sol": {
+			"keccak256": "0x474b52d4370e1719db52ac88d767339d2ff79e1e698945ec29b305e81c91ca24",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6316706dfbe3fe61c6a2f8816c42832e18add4aeee3ddc9820229240a039e814",
+				"dweb:/ipfs/QmXYRYrZzp7eNgXxAcaUULYXAxJSGoGLBja28rXaPYSEaJ"
+			]
+		}
+	},
+	"version": 1
+}
