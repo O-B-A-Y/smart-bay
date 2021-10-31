@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.0+commit.c7dfd78e"
+		"version": "0.8.9+commit.e5eed63a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -13,26 +13,74 @@
 						"type": "string"
 					},
 					{
-						"internalType": "string",
-						"name": "memberName_",
-						"type": "string"
+						"internalType": "uint64",
+						"name": "limitNumberOfMembers_",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint256",
+						"name": "limitFund_",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
 			{
-				"inputs": [],
-				"name": "memberName",
-				"outputs": [
+				"anonymous": false,
+				"inputs": [
 					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "proposalID",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
 						"internalType": "string",
-						"name": "",
+						"name": "description",
 						"type": "string"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
+				"name": "ProposalAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "proposalID",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "position",
+						"type": "bool"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "voter",
+						"type": "address"
+					}
+				],
+				"name": "Voted",
+				"type": "event"
 			},
 			{
 				"inputs": [
@@ -42,12 +90,73 @@
 						"type": "address"
 					}
 				],
-				"name": "members",
+				"name": "allowedRecipients",
 				"outputs": [
 					{
-						"internalType": "contract DaoMember",
+						"internalType": "bool",
 						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_recipient",
 						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_allowed",
+						"type": "bool"
+					}
+				],
+				"name": "changeAllowedRecipients",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "_success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_proposalID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_transactionData",
+						"type": "bytes"
+					}
+				],
+				"name": "executeProposal",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "_success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "limitNumberOfMembers",
+				"outputs": [
+					{
+						"internalType": "uint64",
+						"name": "",
+						"type": "uint64"
 					}
 				],
 				"stateMutability": "view",
@@ -64,6 +173,180 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_description",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_transactionData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_debatingPeriod",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_newCurator",
+						"type": "bool"
+					}
+				],
+				"name": "newProposal",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "_proposalID",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "proposals",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votingDeadline",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "open",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "proposalPassed",
+						"type": "bool"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "proposalHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "proposalDeposit",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "newCurator",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "preSupport",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "yea",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nay",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalNumberOfMembers",
+				"outputs": [
+					{
+						"internalType": "uint64",
+						"name": "",
+						"type": "uint64"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_proposalID",
+						"type": "uint256"
+					}
+				],
+				"name": "unvote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_proposalID",
+						"type": "uint256"
+					}
+				],
+				"name": "vote",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -82,48 +365,32 @@
 		"compilationTarget": {
 			"features/dao/Dao.sol": "Dao"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"features/dao/Dao.sol": {
-			"keccak256": "0xd27bec37852d052060ed8e7e2a3fc9f1e6bbb8ee571c384e1de1ce0dca01b7c9",
+			"keccak256": "0xd46b0b5d5424b7c92fcd715b52921650accd3b7bb931e43a29310434b42697a0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6be261cebce6c2e630c41a0fb644ec801c26dc15de6f09cb483ba043694eab75",
-				"dweb:/ipfs/QmdN8LsrDYev9RHce3iSX8fNRtkjB31Rx5Fu7ZFu27X6HC"
-			]
-		},
-		"features/dao/DaoMember.sol": {
-			"keccak256": "0x74b2ca56b8b8d0d0ab56a641561503dff573807a5e0dca23688ab7b4c2b24717",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://12cff6796c91201608a94cb5c6c5aa41235eb79faffa5637519ca6b47fa37b8a",
-				"dweb:/ipfs/QmNUFeEzgGWKpirPN8g7ggGrWhMpeAYgrNFGvmDg4vMCgT"
+				"bzz-raw://f34c8db4ae2b7e33c211bff26721cbba7977eeb5bc8d379c58a388bd1577da83",
+				"dweb:/ipfs/QmUdLT4eEo96vDSSvrVUSFhQptfnGg9gFapevKDnmcGhRq"
 			]
 		},
 		"interfaces/IDao.sol": {
-			"keccak256": "0x21c885f8ac4948195ec1ce216492b22c9d93a49a3fead2b8a1c9a26107ff7db8",
+			"keccak256": "0xf8f727d2665af7e833130d9bb249696fd6f2060403c494b2fa6ce43f8b094e0e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://87708e7daa59cf0c85ffc883cc46c0fd9598648387091dffdcf157aaa0f6a045",
-				"dweb:/ipfs/QmZ9e1ZXZ8CYDjWQjFgLXkBFw19J6GSLn9p4fu65uqNpZK"
-			]
-		},
-		"interfaces/IDaoMember.sol": {
-			"keccak256": "0x474b52d4370e1719db52ac88d767339d2ff79e1e698945ec29b305e81c91ca24",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://6316706dfbe3fe61c6a2f8816c42832e18add4aeee3ddc9820229240a039e814",
-				"dweb:/ipfs/QmXYRYrZzp7eNgXxAcaUULYXAxJSGoGLBja28rXaPYSEaJ"
+				"bzz-raw://7ab7b4afc975d4d8dbfb74267494cbf1f0101a6517ddaadcb88b720415bbd5bd",
+				"dweb:/ipfs/QmdYn2F7s82N84kADjxYwsWizvavaCpz5NdxjgNJqaqzBv"
 			]
 		}
 	},
