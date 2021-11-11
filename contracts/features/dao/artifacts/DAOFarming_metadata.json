@@ -1,0 +1,191 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "daoAddress",
+						"type": "address"
+					}
+				],
+				"name": "CreatedDAO",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name_",
+						"type": "string"
+					},
+					{
+						"internalType": "uint64",
+						"name": "limitNumberOfMembers_",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint256",
+						"name": "limitFund_",
+						"type": "uint256"
+					}
+				],
+				"name": "createNewDAO",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "daoAddress",
+						"type": "address"
+					}
+				],
+				"name": "fertilize",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllDAOs",
+				"outputs": [
+					{
+						"internalType": "contract IDAO[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "daoAddress",
+						"type": "address"
+					}
+				],
+				"name": "getDAO",
+				"outputs": [
+					{
+						"internalType": "contract IDAO",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"features/dao/DAOFarming.sol": "DAOFarming"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x027b891937d20ccf213fdb9c31531574256de774bda99d3a70ecef6e1913ed2a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://087318b21c528119f649899f5b5580566dd8d7b0303d4904bd0e8580c3545f14",
+				"dweb:/ipfs/Qmbn5Mj7aUn8hJuQ8VrQjjEXRsXyJKykgnjR9p4C3nfLtL"
+			]
+		},
+		"features/dao/DAO.sol": {
+			"keccak256": "0xe45af953515ff41cc661e484ea876296742a332e403828f5b65cf71de501b008",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5c8c991823ab27268b72bde1238dfc7d7ce38a1765beb6e6e616c63568ec0ce4",
+				"dweb:/ipfs/QmSnsAPyBb45qQ4vSktb3YTwsKz1Xamh7hQsxrSU8yBU9A"
+			]
+		},
+		"features/dao/DAOFactory.sol": {
+			"keccak256": "0xe9370fd56a85b716fed433aac00847558043eadcdb1574ec6677f86a8d0c971a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://349b5d5f5f06fe1710099de5b26e66ce9b176378e822aa6f66f3d763f573176c",
+				"dweb:/ipfs/QmVG8ehznuJvJmTFYezscm84pcF9jxQxxqVDWFv7eR7ENc"
+			]
+		},
+		"features/dao/DAOFarming.sol": {
+			"keccak256": "0x4a8e2c75b4eca49bc584b2b14503f9fa3d6c2e8cfac8efe8117a0490cdf9919d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://adcdf0f8edc51db59a1cf705f837b0aa2b5bd564fb688848c461b1b31763ab25",
+				"dweb:/ipfs/Qmb7Z9tfenDKFBmJSktUbnoXg8wJrwDcVprrCL4Xq1v2nT"
+			]
+		},
+		"interfaces/IDAO.sol": {
+			"keccak256": "0xcd8ad5ae68042aa8538d347acb8bffd634f63c7d07d3c96d9a7554ccd949774a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://57829960a96265c4068e8acfa1e86907484eaadf7ac6285285663d6713e1f1a0",
+				"dweb:/ipfs/QmQPZphdUXu4wD1HdzWFyTNfQ71bKCwX1rETqs6ZNhL7tA"
+			]
+		},
+		"interfaces/IDAOFactory.sol": {
+			"keccak256": "0x36f30753d7923aca4e07614ed448cd01f56571512da7232f557c87dacf231f01",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8fe95c57ca0e7812045bcf2d8f795a127c5d74ed4b7b1ba6b8683868e6c97d4c",
+				"dweb:/ipfs/QmcjXYMznREk9fQ513zePCTo5Ly7ke2bmYeRVFFtD5CfEu"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.9+commit.e5eed63a"
+		"version": "0.8.7+commit.e28d00a7"
 	},
 	"language": "Solidity",
 	"output": {
@@ -126,6 +126,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "creator",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -147,6 +160,45 @@
 					}
 				],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "fund",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isActivated",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "limitFund",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -235,6 +287,11 @@
 						"type": "address"
 					},
 					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -271,28 +328,59 @@
 					},
 					{
 						"internalType": "bool",
-						"name": "newCurator",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
 						"name": "preSupport",
 						"type": "bool"
-					},
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "yea",
+						"name": "_amount",
 						"type": "uint256"
-					},
+					}
+				],
+				"name": "stake",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "_isActivated",
+						"type": "bool"
+					}
+				],
+				"name": "toggleIsActivated",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "_success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalFund",
+				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "nay",
+						"name": "",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "creator",
-						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -363,7 +451,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"features/dao/Dao.sol": "Dao"
+			"features/dao/DAO.sol": "DAO"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -371,26 +459,34 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"features/dao/Dao.sol": {
-			"keccak256": "0xd46b0b5d5424b7c92fcd715b52921650accd3b7bb931e43a29310434b42697a0",
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x027b891937d20ccf213fdb9c31531574256de774bda99d3a70ecef6e1913ed2a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f34c8db4ae2b7e33c211bff26721cbba7977eeb5bc8d379c58a388bd1577da83",
-				"dweb:/ipfs/QmUdLT4eEo96vDSSvrVUSFhQptfnGg9gFapevKDnmcGhRq"
+				"bzz-raw://087318b21c528119f649899f5b5580566dd8d7b0303d4904bd0e8580c3545f14",
+				"dweb:/ipfs/Qmbn5Mj7aUn8hJuQ8VrQjjEXRsXyJKykgnjR9p4C3nfLtL"
 			]
 		},
-		"interfaces/IDao.sol": {
-			"keccak256": "0xf8f727d2665af7e833130d9bb249696fd6f2060403c494b2fa6ce43f8b094e0e",
+		"features/dao/DAO.sol": {
+			"keccak256": "0xe45af953515ff41cc661e484ea876296742a332e403828f5b65cf71de501b008",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7ab7b4afc975d4d8dbfb74267494cbf1f0101a6517ddaadcb88b720415bbd5bd",
-				"dweb:/ipfs/QmdYn2F7s82N84kADjxYwsWizvavaCpz5NdxjgNJqaqzBv"
+				"bzz-raw://5c8c991823ab27268b72bde1238dfc7d7ce38a1765beb6e6e616c63568ec0ce4",
+				"dweb:/ipfs/QmSnsAPyBb45qQ4vSktb3YTwsKz1Xamh7hQsxrSU8yBU9A"
+			]
+		},
+		"interfaces/IDAO.sol": {
+			"keccak256": "0xcd8ad5ae68042aa8538d347acb8bffd634f63c7d07d3c96d9a7554ccd949774a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://57829960a96265c4068e8acfa1e86907484eaadf7ac6285285663d6713e1f1a0",
+				"dweb:/ipfs/QmQPZphdUXu4wD1HdzWFyTNfQ71bKCwX1rETqs6ZNhL7tA"
 			]
 		}
 	},

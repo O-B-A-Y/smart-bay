@@ -31,6 +31,7 @@
 	},
 	"data": {
 		"bytecode": {
+			"functionDebugData": {},
 			"generatedSources": [],
 			"linkReferences": {},
 			"object": "",
@@ -38,6 +39,7 @@
 			"sourceMap": ""
 		},
 		"deployedBytecode": {
+			"functionDebugData": {},
 			"generatedSources": [],
 			"immutableReferences": {},
 			"linkReferences": {},
@@ -47,35 +49,238 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"memberName()": "07c21383",
-			"name()": "06fdde03"
+			"changeAllowedRecipients(address,bool)": "749f9889",
+			"executeProposal(uint256,bytes)": "237e9492",
+			"newProposal(address,uint256,string,bytes,uint256,bool)": "612e45a3",
+			"stake(uint256)": "a694fc3a",
+			"toggleIsActivated(bool)": "665e3d83",
+			"unvote(uint256)": "51ec4285",
+			"vote(uint256)": "0121b93f"
 		}
 	},
 	"abi": [
 		{
-			"inputs": [],
-			"name": "memberName",
-			"outputs": [
+			"anonymous": false,
+			"inputs": [
 				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "proposalID",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "address",
+					"name": "recipient",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "amount",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
 					"internalType": "string",
-					"name": "",
+					"name": "description",
 					"type": "string"
 				}
 			],
-			"stateMutability": "view",
+			"name": "ProposalAdded",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "proposalID",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "bool",
+					"name": "position",
+					"type": "bool"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "voter",
+					"type": "address"
+				}
+			],
+			"name": "Voted",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_recipient",
+					"type": "address"
+				},
+				{
+					"internalType": "bool",
+					"name": "_allowed",
+					"type": "bool"
+				}
+			],
+			"name": "changeAllowedRecipients",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "_success",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "name",
-			"outputs": [
+			"inputs": [
 				{
-					"internalType": "string",
-					"name": "",
-					"type": "string"
+					"internalType": "uint256",
+					"name": "_proposalID",
+					"type": "uint256"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_transactionData",
+					"type": "bytes"
 				}
 			],
-			"stateMutability": "view",
+			"name": "executeProposal",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "_success",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_recipient",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_description",
+					"type": "string"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_transactionData",
+					"type": "bytes"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_debatingPeriod",
+					"type": "uint256"
+				},
+				{
+					"internalType": "bool",
+					"name": "_newCurator",
+					"type": "bool"
+				}
+			],
+			"name": "newProposal",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "_proposalID",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_amount",
+					"type": "uint256"
+				}
+			],
+			"name": "stake",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "bool",
+					"name": "isActivated",
+					"type": "bool"
+				}
+			],
+			"name": "toggleIsActivated",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "_success",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_proposalID",
+					"type": "uint256"
+				}
+			],
+			"name": "unvote",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_proposalID",
+					"type": "uint256"
+				}
+			],
+			"name": "vote",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]
