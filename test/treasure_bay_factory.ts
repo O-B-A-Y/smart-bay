@@ -1,11 +1,11 @@
-const TreasureBayFactory = artifacts.require("TreasureBayFactory");
-const TreasureBay = artifacts.require("TreasureBay");
+contract("TreasureBayFactory", function (accounts: string[]) {
+  const TreasureBayFactory = artifacts.require("TreasureBayFactory");
+  const TreasureBay = artifacts.require("TreasureBay");
 
-contract("TreasureBayFactory", async function (/* accounts */) {
-  it("should deploy smart contract properly", async () => {
-    let scopedInstance = await TreasureBayFactory.deployed();
-    console.log(scopedInstance.address);
-    assert(scopedInstance.address !== "");
+  it("should deploy smart contracts properly", async () => {
+    let contract = await TreasureBayFactory.deployed();
+    console.log(contract.address);
+    assert(contract.address !== "");
   });
 
   it("should have 0 treasure bays", async () => {
@@ -18,12 +18,27 @@ contract("TreasureBayFactory", async function (/* accounts */) {
     let instance = await TreasureBayFactory.deployed();
     const mockBayData = {
       name: "Binance",
-      limitMembers: 200,
+      limitStakeHolders: 200,
+      limitTreasureHunters: 300,
     };
-    await instance.createNewBay(mockBayData.name, mockBayData.limitMembers);
+    await instance.createNewBay(
+      mockBayData.name,
+      mockBayData.limitStakeHolders,
+      mockBayData.limitTreasureHunters
+    );
     let allBays = await instance.getAllBays();
     assert(allBays.length > 0, "treasure bay is not created");
     let bay = await TreasureBay.at(allBays[0]);
+    await bay.createTreasureHunter();
+    let treasureHunter = await bay.treasureHunters(accounts[0]);
+    assert(
+      (treasureHunter as any).contractAddress === accounts[0],
+      "treasureHunter info is not matched"
+    );
+    assert(
+      web3.utils.fromWei(await bay.numberOfStakeholders()) === "0",
+      "number of stakeholders must remain 0"
+    );
     let bayName = await bay.name();
     assert(bayName === mockBayData.name, "treasure bay name is not matched");
   });

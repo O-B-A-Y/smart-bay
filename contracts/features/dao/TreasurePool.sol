@@ -1,75 +1,94 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.0;
 
-contract TreasurePool {
+import "@openzeppelin/contracts/utils/Context.sol";
+
+contract TreasurePool is Context {
   struct Stakeholder {
     uint256 balance;
-    address walletAddress;
+    address contractAddress;
     uint256 claimedInterval;
   }
   mapping(address => Stakeholder) public stakeholders;
+  uint64 public numberOfStakeholders;
   address public admin;
   address public daoAddress;
   uint256 public totalStakedAmount;
   uint64 public limitNumberOfStakeholders;
   uint64 public totalNumberOfStakeholders;
-  Stakeholder stakeholder;
+  uint64 private _lockedDuration = 7 days;
+  uint64 private _defaultClaimedInterval = 3 days;
+  uint64 public minimumStakedAmount;
 
   event NewStakeholder(address stakeholder);
   event RemoveStakeholder(address stakeholder);
   event Stake(address stakeholder, uint256 amount);
   event Unstake(address stakeholder, uint256 amount);
-  event NewPoolCreated();
+  event NewPoolCreated(address owner, uint256 lockedAmount);
 
   constructor() {
-    admin = msg.sender;
+    admin = _msgSender();
   }
 
   modifier isStakeholder() {
-    require(stakeholders[msg.sender].balance > 0, "Not a stakeholder");
+    require(stakeholders[_msgSender()].balance > 0, "Not a stakeholder");
     _;
   }
 
-  function _init(uint256 _amount) internal {
-    stakeholder = Stakeholder(_amount, msg.sender, 3 days);
-    stakeholders[msg.sender] = stakeholder;
-    totalStakedAmount += _amount;
-    emit NewPoolCreated();
-  }
-
-  function _stake() internal {
-    if (stakeholders[msg.sender].balance == 0) {
-      stakeholder = Stakeholder(msg.value, msg.sender, 3 days);
-      stakeholders[msg.sender] = stakeholder;
-      emit NewStakeholder(msg.sender);
-    } else {
-      stakeholders[msg.sender].balance += msg.value;
-    }
-    totalStakedAmount += msg.value;
-    emit Stake(msg.sender, msg.value);
-  }
-
-  function _unstake() internal isStakeholder {
+  function createStakeholder() public returns (Stakeholder memory) {
     require(
-      msg.value <= stakeholders[msg.sender].balance,
+      numberOfStakeholders <= limitNumberOfStakeholders,
+      "surpass limit number of stakeholders"
+    );
+    stakeholders[_msgSender()] = Stakeholder(
+      0,
+      _msgSender(),
+      _defaultClaimedInterval
+    );
+    numberOfStakeholders += 1;
+    emit NewStakeholder(stakeholders[_msgSender()].contractAddress);
+    return stakeholders[_msgSender()];
+  }
+
+  function stake() public payable {
+    require(msg.value > 0, "invalid staked amount");
+    require(msg.value > minimumStakedAmount, "invalid staked amount");
+
+    // Check if the stakeholder is added or not
+    if (stakeholders[_msgSender()].balance == 0) {
+      createStakeholder();
+    }
+    stakeholders[_msgSender()].balance += msg.value;
+    totalStakedAmount += msg.value;
+    emit Stake(_msgSender(), msg.value);
+  }
+
+  function unstake() public payable isStakeholder {
+    require(
+      block.timestamp > _lockedDuration,
+      "Must staked for 7 days before unstaking"
+    );
+    require(
+      msg.value <= stakeholders[_msgSender()].balance,
       "Insufficient staked amount"
     );
-    payable(msg.sender).transfer(msg.value);
-    stakeholders[msg.sender].balance -= msg.value;
-    if (stakeholders[msg.sender].balance == 0) {
-      delete stakeholders[msg.sender];
-      emit RemoveStakeholder(msg.sender);
+    payable(_msgSender()).transfer(msg.value);
+    stakeholders[_msgSender()].balance -= msg.value;
+    if (stakeholders[_msgSender()].balance == 0) {
+      delete stakeholders[_msgSender()];
+      numberOfStakeholders -= 1;
+      emit RemoveStakeholder(_msgSender());
     }
     totalStakedAmount -= msg.value;
-    emit Unstake(msg.sender, msg.value);
+    emit Unstake(_msgSender(), msg.value);
   }
 
-  function _claim() internal isStakeholder {
+  function claim() public payable isStakeholder {
     require(
-      block.timestamp > stakeholders[msg.sender].claimedInterval,
+      block.timestamp > stakeholders[_msgSender()].claimedInterval,
       "Too early"
     );
-    stakeholders[msg.sender].claimedInterval = 3 days;
+    stakeholders[_msgSender()].claimedInterval = 3 days;
     // TODO Handle interest rate and claimable tokens
   }
 }

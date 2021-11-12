@@ -11,9 +11,11 @@ interface ITreasureBayFactory {
     address indexed bayAddress
   );
 
-  function createNewBay(string memory name_, uint64 limitNumberOfMembers_)
-    external
-    returns (bool);
+  function createNewBay(
+    string memory name_,
+    uint64 limitNumberOfMembers_,
+    uint64 limitNumberOfTreasureHunters_
+  ) external returns (bool);
 
   function getAllBays() external returns (ITreasureBay[] memory);
 

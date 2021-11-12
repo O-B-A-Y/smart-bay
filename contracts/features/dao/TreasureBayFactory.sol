@@ -9,12 +9,16 @@ contract TreasureBayFactory is ITreasureBayFactory, Context {
   ITreasureBay[] private _listOfBays;
   mapping(address => ITreasureBay) _mapOfBays;
 
-  function createNewBay(string memory name_, uint64 limitNumberOfMembers_)
-    external
-    override
-    returns (bool)
-  {
-    TreasureBay bay = new TreasureBay(name_, limitNumberOfMembers_);
+  function createNewBay(
+    string memory name_,
+    uint64 limitNumberOfMembers_,
+    uint64 limitNumberOfTreasureHunters_
+  ) external override returns (bool) {
+    TreasureBay bay = new TreasureBay(
+      name_,
+      limitNumberOfMembers_,
+      limitNumberOfTreasureHunters_
+    );
     _listOfBays.push(bay);
     _mapOfBays[address(bay)] = bay;
 

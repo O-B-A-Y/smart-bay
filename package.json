@@ -35,7 +35,8 @@
     "test": "truffle test",
     "lint": "solhint -c .solhint.json contracts/**/*.sol",
     "postinstall": "npx truffle compile && npm run generate-types",
-    "gat": "npx typechain --target=truffle-v5 'build/contracts/*.json'"
+    "gat": "npx typechain --target=truffle-v5 'build/contracts/*.json'",
+    "compile": "truffle compile && npm run gat"
   },
   "keywords": [],
   "author": "",

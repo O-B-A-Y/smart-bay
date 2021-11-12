@@ -3,73 +3,109 @@ pragma solidity >=0.8.0;
 
 import "./ITreasureBay.sol";
 import "./TreasurePool.sol";
+import "./proposal/ExchangeProposal.sol";
+import "./proposal/TransferProposal.sol";
+import "./proposal/TreasureExchangeChest.sol";
+import "./proposal/TreasureTransferChest.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
 
-contract TreasureBay is ITreasureBay, TreasurePool, Context {
-  // struct Proposal {
-  //   address recipient; // The address where the `amount` will go to if the proposal is accepted
-  //   address creator; // Address of the shareholder who created the proposal
-  //   uint256 amount; // The amount to transfer to `recipient` if the proposal is accepted.
-  //   string description; // A plain text description of the proposal
-  //   uint256 votingDeadline; // A unix timestamp, denoting the end of the voting period
-  //   bool open; // True if the proposal's votes have yet to be counted, otherwise False
-  //   bool proposalPassed; // True if quorum has been reached, the votes have been counted, and the majority said yes
-  //   bytes32 proposalHash; // A hash to check validity of a proposal
-  //   // Deposit in wei the creator added when submitting their proposal. It
-  //   // is taken from the msg.value of a newProposal call.
-  //   uint256 proposalDeposit;
-  //   // true if more tokens are in favour of the proposal than opposed to it at
-  //   // least `preSupportTime` before the voting deadline
-  //   bool preSupport;
-  //   mapping(address => bool) votedYes; // Simple mapping to check if a shareholder has voted for it
-  //   mapping(address => bool) votedNo; // Simple mapping to check if a shareholder has voted against it
-  // }
-  uint64 private BAY_CREATION_FEE = 0.03 ether;
+contract TreasureBay is
+  ITreasureBay,
+  TreasurePool,
+  TreasureTransferChest,
+  TreasureExchangeChest
+{
+  struct TreasureHunter {
+    address contractAddress;
+    uint256 joinedAt;
+  }
   string private _name;
   address private _creator;
-  // If there are more than 3 members, activated
-  bool private _isActivated = false;
-
+  uint64 public totalNumberOfTreasureHunters;
+  uint64 private _limitNumberOfTreasureHunters;
+  mapping(address => TreasureHunter) public treasureHunters;
+  bool private _isActivated = false; // If there are more than 3 members, activated
   mapping(address => bool) public allowedRecipients;
 
-  // TODO Proposal[] public proposals;
+  event NewTreasureHunter(address treasureHunter, uint256 timestamp);
 
-  constructor(string memory name_, uint64 limitNumberOfStakeholders_)
-    payable
-    ITreasureBay()
-  {
-    limitNumberOfStakeholders = limitNumberOfStakeholders_;
-    _name = name_;
-    _creator = _msgSender();
-    stakeholder = Stakeholder(msg.value, _msgSender(), 3 days);
-    // Initialize a staking pool
-    _init(BAY_CREATION_FEE);
+  modifier onlyStakeholder() {
+    require(stakeholders[msg.sender].balance > 0, "must be a stakeholder");
+    _;
   }
 
-  /**
-   * @dev Returns the name of the treasure bay.
-   */
+  modifier onlyTreasureHunter() {
+    require(
+      treasureHunters[msg.sender].contractAddress != address(0x0),
+      "must be a treasureHunter"
+    );
+    _;
+  }
+
+  constructor(
+    string memory name_,
+    uint64 limitNumberOfStakeholders_,
+    uint64 limitNumberOfTreasureHunters_
+  ) payable ITreasureBay() {
+    limitNumberOfStakeholders = limitNumberOfStakeholders_;
+    _limitNumberOfTreasureHunters = limitNumberOfTreasureHunters_;
+    _name = name_;
+    _creator = _msgSender();
+  }
+
   function name() public view virtual returns (string memory) {
     return _name;
   }
 
-  /**
-   * @dev Returns the name of the treasure bay.
-   */
   function creator() public view virtual returns (address) {
     return _creator;
   }
 
-  // function newProposal(
-  //   address _recipient,
-  //   uint256 _amount,
-  //   string memory _description,
-  //   bytes memory _transactionData,
-  //   uint256 _debatingPeriod,
-  //   bool _newCurator
-  // ) external payable override returns (uint256 _proposalID) {}
+  function limitNumberOfTreasureHunters() public view virtual returns (uint64) {
+    return _limitNumberOfTreasureHunters;
+  }
+
+  function createTreasureHunter() public returns (TreasureHunter memory) {
+    require(
+      totalNumberOfTreasureHunters <= _limitNumberOfTreasureHunters,
+      "surpass limit number of treasureHunters"
+    );
+    totalNumberOfTreasureHunters += 1;
+    if (totalNumberOfTreasureHunters > 5) {
+      toggleIsActivated(true);
+    }
+    treasureHunters[_msgSender()] = TreasureHunter(
+      _msgSender(),
+      block.timestamp
+    );
+    emit NewTreasureHunter(
+      treasureHunters[_msgSender()].contractAddress,
+      block.timestamp
+    );
+    return treasureHunters[_msgSender()];
+  }
+
+  function toggleIsActivated(bool isActivated_) public returns (bool _success) {
+    _isActivated = isActivated_;
+    return true;
+  }
+
+  function createNewTransferProposal(
+    string memory _title,
+    string memory _description,
+    uint64 _debatingPeriod,
+    address _recipient,
+    uint256 _amount
+  ) public onlyStakeholder {
+    _newTransferProposal(
+      _title,
+      _description,
+      _debatingPeriod,
+      _recipient,
+      _amount
+    );
+  }
 
   // function vote(uint256 _proposalID) external override returns (bool) {}
 
@@ -86,28 +122,4 @@ contract TreasureBay is ITreasureBay, TreasurePool, Context {
   //   override
   //   returns (bool _success)
   // {}
-
-  function toggleIsActivated(bool isActivated_)
-    external
-    override
-    returns (bool _success)
-  {
-    _isActivated = isActivated_;
-    return true;
-  }
-
-  // function stake(uint256 _amount)
-  //   external
-  //   payable
-  //   override
-  // {
-  //   IERC20 token = ERC20(msg.sender);
-  //   uint256 erc20balance = token.balanceOf(msg.sender);
-  //   token.approve(address(this), _amount);
-  //   require(_amount <= erc20balance, "Amount is low");
-  //   // token.transferFrom(msg.sender, address(this), _amount);
-  //   // if (isActivated == false) {
-  //   //   isActivated = true;
-  //   // }
-  // }
 }
