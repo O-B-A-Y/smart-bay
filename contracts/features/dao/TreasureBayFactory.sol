@@ -3,8 +3,9 @@ pragma solidity >=0.8.0;
 
 import "./ITreasureBayFactory.sol";
 import "./TreasureBay.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
-contract TreasureBayFactory is ITreasureBayFactory {
+contract TreasureBayFactory is ITreasureBayFactory, Context {
   ITreasureBay[] private _listOfBays;
   mapping(address => ITreasureBay) _mapOfBays;
 
@@ -17,7 +18,7 @@ contract TreasureBayFactory is ITreasureBayFactory {
     _listOfBays.push(bay);
     _mapOfBays[address(bay)] = bay;
 
-    emit NewBayCreated(name_, msg.sender, address(bay));
+    emit NewBayCreated(name_, _msgSender(), address(bay));
     return true;
   }
 

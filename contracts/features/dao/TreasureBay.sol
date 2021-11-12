@@ -5,8 +5,9 @@ import "./ITreasureBay.sol";
 import "./TreasurePool.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
-contract TreasureBay is ITreasureBay, TreasurePool {
+contract TreasureBay is ITreasureBay, TreasurePool, Context {
   // struct Proposal {
   //   address recipient; // The address where the `amount` will go to if the proposal is accepted
   //   address creator; // Address of the shareholder who created the proposal
@@ -26,11 +27,10 @@ contract TreasureBay is ITreasureBay, TreasurePool {
   //   mapping(address => bool) votedNo; // Simple mapping to check if a shareholder has voted against it
   // }
   uint64 private BAY_CREATION_FEE = 0.03 ether;
-  string public name;
-  uint256 public fund;
-  address public creator;
+  string private _name;
+  address private _creator;
   // If there are more than 3 members, activated
-  bool public isActivated = false;
+  bool private _isActivated = false;
 
   mapping(address => bool) public allowedRecipients;
 
@@ -41,11 +41,25 @@ contract TreasureBay is ITreasureBay, TreasurePool {
     ITreasureBay()
   {
     limitNumberOfStakeholders = limitNumberOfStakeholders_;
-    name = name_;
-    creator = msg.sender;
-    stakeholder = Stakeholder(msg.value, msg.sender, 3 days);
+    _name = name_;
+    _creator = _msgSender();
+    stakeholder = Stakeholder(msg.value, _msgSender(), 3 days);
     // Initialize a staking pool
     _init(BAY_CREATION_FEE);
+  }
+
+  /**
+   * @dev Returns the name of the treasure bay.
+   */
+  function name() public view virtual returns (string memory) {
+    return _name;
+  }
+
+  /**
+   * @dev Returns the name of the treasure bay.
+   */
+  function creator() public view virtual returns (address) {
+    return _creator;
   }
 
   // function newProposal(
@@ -73,12 +87,12 @@ contract TreasureBay is ITreasureBay, TreasurePool {
   //   returns (bool _success)
   // {}
 
-  function toggleIsActivated(bool _isActivated)
+  function toggleIsActivated(bool isActivated_)
     external
     override
     returns (bool _success)
   {
-    isActivated = _isActivated;
+    _isActivated = isActivated_;
     return true;
   }
 
