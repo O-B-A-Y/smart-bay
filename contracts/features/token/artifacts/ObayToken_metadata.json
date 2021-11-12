@@ -202,6 +202,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getTokenAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -484,11 +497,11 @@
 			]
 		},
 		"features/token/ObayToken.sol": {
-			"keccak256": "0x746729914a3e6c2165dee64382ac8b84c302ae1bc2c403c2982deaf1f1eecfbe",
+			"keccak256": "0x8560a2b64adcb68d0bf3aaba666703f0dcb048a13a65dc34e65e7c84e36b91a3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://31a1181e2c664cb456c59ae72ccd3bb2810c7dddf7398cef153b8ddf23569413",
-				"dweb:/ipfs/QmYQGBjxDcziHCUv3q4rvacyDcP1K1wDGkLknbhHjGy4V2"
+				"bzz-raw://107538028194178227eacc33403a9625b46ef08608e2f290e7346c76d6b40d1f",
+				"dweb:/ipfs/QmbW86fCRSGHHZFPjLPcjFq4pEwwAE5LRtHMqdc6SSFpxH"
 			]
 		}
 	},
