@@ -1,6 +1,32 @@
+import {
+  TreasureBayFactoryInstance,
+  TreasureBayInstance,
+} from "../types/truffle-contracts";
+
 contract("TreasurePool", function (accounts: string[]) {
   const TreasureBayFactory = artifacts.require("TreasureBayFactory");
   const TreasureBay = artifacts.require("TreasureBay");
+
+  let treasureBayFactoryContract: TreasureBayFactoryInstance;
+  let bay: TreasureBayInstance;
+
+  before("initialized before running test", async () => {
+    treasureBayFactoryContract = await TreasureBayFactory.deployed();
+
+    /** Create a new bay */
+    const mockBayData = {
+      name: "Binance",
+      limitStakeHolders: 200,
+      limitTreasureHunters: 300,
+    };
+    await treasureBayFactoryContract.createNewBay(
+      mockBayData.name,
+      mockBayData.limitStakeHolders,
+      mockBayData.limitTreasureHunters
+    );
+    let allBays = await treasureBayFactoryContract.getAllBays();
+    bay = await TreasureBay.at(allBays[0]);
+  });
 
   it("should deploy smart contracts properly", async () => {
     let contract = await TreasureBayFactory.deployed();
@@ -9,21 +35,6 @@ contract("TreasurePool", function (accounts: string[]) {
   });
 
   it("create a pool successfully", async () => {
-    let instance = await TreasureBayFactory.deployed();
-    /** Create a new bay */
-    const mockBayData = {
-      name: "Binance",
-      limitStakeHolders: 200,
-      limitTreasureHunters: 300,
-    };
-    await instance.createNewBay(
-      mockBayData.name,
-      mockBayData.limitStakeHolders,
-      mockBayData.limitTreasureHunters
-    );
-    /** Count number of bays */
-    let allBays = await instance.getAllBays();
-    let bay = await TreasureBay.at(allBays[0]);
     await bay.createTreasureHunter();
     let treasureHunter = await bay.treasureHunters(accounts[0]);
     assert(
@@ -31,8 +42,7 @@ contract("TreasurePool", function (accounts: string[]) {
       "treasureHunter info is not matched"
     );
     assert(
-      web3.utils.fromWei(await bay.totalNumberOfTreasureHunters()) ===
-        "0.000000000000000001",
+      (await bay.listOfTreasureHunters()).length === 1,
       "number of treasureHunters is not updated"
     );
     assert(
@@ -46,28 +56,6 @@ contract("TreasurePool", function (accounts: string[]) {
   });
 
   it("stake to pool successfully", async () => {
-    let instance = await TreasureBayFactory.deployed();
-    /** Create a new bay */
-    const mockBayData = {
-      name: "Binance",
-      limitStakeHolders: 200,
-      limitTreasureHunters: 300,
-    };
-    await instance.createNewBay(
-      mockBayData.name,
-      mockBayData.limitStakeHolders,
-      mockBayData.limitTreasureHunters
-    );
-    /** Count number of bays */
-    let allBays = await instance.getAllBays();
-    let bay = await TreasureBay.at(allBays[0]);
-
-    assert(
-      web3.utils.fromWei(await bay.totalNumberOfTreasureHunters()) ===
-        "0.000000000000000001",
-      "Number of treasure hunters is not updated"
-    );
-
     await bay.stake({
       value: web3.utils.toWei("0.001"),
     });
@@ -95,8 +83,15 @@ contract("TreasurePool", function (accounts: string[]) {
       await bay.unstake({
         value: web3.utils.toWei("0.0005"),
       });
-    } catch (error) {
-      assert(error === "", "error message is not valid");
+      assert(
+        web3.utils.fromWei(await bay.totalStakedAmount()) === `${0.0005}`,
+        "wrong staked number accumulated"
+      );
+    } catch (error: any) {
+      assert(
+        error.reason === "Must staked for 7 days before unstaking",
+        "error message is not valid"
+      );
     }
   });
 });

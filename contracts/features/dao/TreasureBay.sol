@@ -22,8 +22,8 @@ contract TreasureBay is
   }
   string private _name;
   address private _creator;
-  uint64 public totalNumberOfTreasureHunters;
   uint64 private _limitNumberOfTreasureHunters;
+  TreasureHunter[] private _listOfTreasureHunters;
   mapping(address => TreasureHunter) public treasureHunters;
   bool private _isActivated = false; // If there are more than 3 members, activated
   mapping(address => bool) public allowedRecipients;
@@ -66,19 +66,28 @@ contract TreasureBay is
     return _limitNumberOfTreasureHunters;
   }
 
+  function listOfTreasureHunters()
+    public
+    view
+    virtual
+    returns (TreasureHunter[] memory)
+  {
+    return _listOfTreasureHunters;
+  }
+
   function createTreasureHunter() public returns (TreasureHunter memory) {
     require(
-      totalNumberOfTreasureHunters <= _limitNumberOfTreasureHunters,
+      _listOfTreasureHunters.length <= _limitNumberOfTreasureHunters,
       "surpass limit number of treasureHunters"
     );
-    totalNumberOfTreasureHunters += 1;
-    if (totalNumberOfTreasureHunters > 5) {
-      toggleIsActivated(true);
-    }
     treasureHunters[_msgSender()] = TreasureHunter(
       _msgSender(),
       block.timestamp
     );
+    _listOfTreasureHunters.push(treasureHunters[_msgSender()]);
+    if (_listOfTreasureHunters.length > 5) {
+      toggleIsActivated(true);
+    }
     emit NewTreasureHunter(
       treasureHunters[_msgSender()].contractAddress,
       block.timestamp
@@ -97,19 +106,16 @@ contract TreasureBay is
     uint64 _debatingPeriod,
     address _recipient,
     uint256 _amount
-  ) public onlyStakeholder {
-    _newTransferProposal(
-      _title,
-      _description,
-      _debatingPeriod,
-      _recipient,
-      _amount
-    );
+  ) public onlyStakeholder returns (uint256) {
+    return
+      _newTransferProposal(
+        _title,
+        _description,
+        _debatingPeriod,
+        _recipient,
+        _amount
+      );
   }
-
-  // function vote(uint256 _proposalID) external override returns (bool) {}
-
-  // function unvote(uint256 _proposalID) external override returns (bool) {}
 
   // function executeProposal(uint256 _proposalID, bytes memory _transactionData)
   //   external

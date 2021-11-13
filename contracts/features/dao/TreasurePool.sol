@@ -8,6 +8,7 @@ contract TreasurePool is Context {
     uint256 balance;
     address contractAddress;
     uint256 claimedInterval;
+    uint256 joinedAt;
   }
   mapping(address => Stakeholder) public stakeholders;
   uint64 public numberOfStakeholders;
@@ -43,7 +44,8 @@ contract TreasurePool is Context {
     stakeholders[_msgSender()] = Stakeholder(
       0,
       _msgSender(),
-      _defaultClaimedInterval
+      block.timestamp + _defaultClaimedInterval,
+      block.timestamp
     );
     numberOfStakeholders += 1;
     emit NewStakeholder(stakeholders[_msgSender()].contractAddress);
@@ -65,7 +67,7 @@ contract TreasurePool is Context {
 
   function unstake() public payable isStakeholder {
     require(
-      block.timestamp > _lockedDuration,
+      block.timestamp > stakeholders[_msgSender()].joinedAt + _lockedDuration,
       "Must staked for 7 days before unstaking"
     );
     require(
@@ -73,7 +75,7 @@ contract TreasurePool is Context {
       "Insufficient staked amount"
     );
     payable(_msgSender()).transfer(msg.value);
-    stakeholders[_msgSender()].balance -= msg.value;
+    stakeholders[_msgSender()].balance += msg.value;
     if (stakeholders[_msgSender()].balance == 0) {
       delete stakeholders[_msgSender()];
       numberOfStakeholders -= 1;

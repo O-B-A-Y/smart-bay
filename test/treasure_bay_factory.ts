@@ -32,6 +32,10 @@ contract("TreasureBayFactory", function (accounts: string[]) {
     await bay.createTreasureHunter();
     let treasureHunter = await bay.treasureHunters(accounts[0]);
     assert(
+      (await bay.listOfTreasureHunters()).length === 1,
+      "number of treasureHunters is not updated"
+    );
+    assert(
       (treasureHunter as any).contractAddress === accounts[0],
       "treasureHunter info is not matched"
     );

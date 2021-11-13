@@ -9,12 +9,13 @@ contract TransferProposal is Proposal {
   ProposalType constant proposalType = ProposalType.TRANSFER;
 
   constructor(
+    address _creator,
     string memory _description,
     string memory _title,
     uint256 _debatingPeriod,
     address _recipient,
     uint256 _amount
-  ) Proposal(_description, _title, _debatingPeriod) {
+  ) Proposal(_creator, _description, _title, _debatingPeriod) {
     recipient = _recipient;
     amount = _amount;
   }

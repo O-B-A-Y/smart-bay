@@ -2,11 +2,11 @@
 pragma solidity >=0.4.0;
 
 import "./TransferProposal.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract TreasureTransferChest {
-  uint64 public totalNumberOfProposals;
-  TransferProposal[] public listOfTransferProposals;
-  mapping(uint64 => TransferProposal) transferProposals;
+contract TreasureTransferChest is Ownable {
+  TransferProposal[] private _listOfTransferProposals;
+  mapping(address => TransferProposal) transferProposals;
 
   event NewTransferProposalAdded(
     string _title,
@@ -21,31 +21,35 @@ contract TreasureTransferChest {
     uint256 _debatingPeriod,
     address _recipient,
     uint256 _amount
-  ) internal returns (TransferProposal) {
+  ) internal returns (uint256 proposalId) {
     TransferProposal p = new TransferProposal(
+      _msgSender(),
       _description,
       _title,
       _debatingPeriod,
       _recipient,
       _amount
     );
-    totalNumberOfProposals += 1;
-    transferProposals[totalNumberOfProposals] = p;
-    listOfTransferProposals.push(p);
+    _listOfTransferProposals.push(p);
+    transferProposals[address(p)] = p;
 
     emit NewTransferProposalAdded(_title, msg.sender, _recipient, _amount);
-    return p;
+    return _listOfTransferProposals.length;
   }
 
-  function getAllProposals() external view returns (TransferProposal[] memory) {
-    return listOfTransferProposals;
+  function getAllTransferProposals()
+    external
+    view
+    returns (TransferProposal[] memory)
+  {
+    return _listOfTransferProposals;
   }
 
-  function getProposal(uint64 _proposalId)
+  function getTransferProposal(address _proposalAddress)
     external
     view
     returns (TransferProposal)
   {
-    return transferProposals[_proposalId];
+    return transferProposals[_proposalAddress];
   }
 }
