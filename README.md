@@ -27,6 +27,7 @@ npm run gat
 Recommended VSCode extensions for Solidity development: 
 
 Ethereum Solidity Language for Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity
+
 Solidity Debugger: https://marketplace.visualstudio.com/items?itemName=hosho.solidity-debugger
 
 ## Contribution Guide
