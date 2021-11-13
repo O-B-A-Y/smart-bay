@@ -10,7 +10,7 @@ import {
  * Ethereum client
  * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
  */
-contract("TreasureTransferChest", function (accounts: string[]) {
+contract("TreasureTransferChest", function ([deployer]) {
   const TreasureTransferChest = artifacts.require("TreasureTransferChest");
   const TreasureBayFactory = artifacts.require("TreasureBayFactory");
   const TreasureBay = artifacts.require("TreasureBay");
@@ -68,7 +68,7 @@ contract("TreasureTransferChest", function (accounts: string[]) {
       title: "Testing proposal",
       description: "Hello World",
       duration: deadline,
-      recipient: accounts[1],
+      recipient: deployer,
       amount: "0.001",
     };
     try {
@@ -93,7 +93,7 @@ contract("TreasureTransferChest", function (accounts: string[]) {
       title: "Testing proposal",
       description: "Hello World",
       duration: deadline,
-      recipient: accounts[1],
+      recipient: deployer,
       amount: "0.001",
     };
 
@@ -108,7 +108,7 @@ contract("TreasureTransferChest", function (accounts: string[]) {
       mockProposalData.recipient,
       web3.utils.toWei(mockProposalData.amount),
       {
-        from: accounts[0],
+        from: deployer,
       }
     );
     let listOfProposals = await bay.getAllTransferProposals();
@@ -117,9 +117,9 @@ contract("TreasureTransferChest", function (accounts: string[]) {
       "number of proposals is not updated"
     );
     let proposal = await TransferProposal.at(listOfProposals[0]);
-    console.log(await proposal.creator(), accounts[0]);
+    console.log(await proposal.creator(), deployer);
     assert(
-      (await proposal.creator()) == accounts[0],
+      (await proposal.creator()) == deployer,
       "creator field has wrong value"
     );
   });
@@ -139,7 +139,7 @@ contract("TreasureTransferChest", function (accounts: string[]) {
       "number of yes votes is not updated"
     );
     assert.isTrue(
-      await proposal.votedYes(accounts[0]),
+      await proposal.votedYes(deployer),
       "must be in the voted yes list"
     );
     let numberOfNoVote = web3.utils.fromWei(await proposal.numberOfNoVote());
@@ -157,7 +157,7 @@ contract("TreasureTransferChest", function (accounts: string[]) {
     numberOfYesVote = web3.utils.fromWei(await proposal.numberOfYesVote());
     assert(numberOfYesVote == "0", "number of yes votes is not updated");
     assert.isFalse(
-      await proposal.votedYes(accounts[0]),
+      await proposal.votedYes(deployer),
       "must not be in the voted yes list"
     );
     numberOfNoVote = web3.utils.fromWei(await proposal.numberOfNoVote());

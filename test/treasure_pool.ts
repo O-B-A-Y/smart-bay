@@ -3,7 +3,7 @@ import {
   TreasureBayInstance,
 } from "../types/truffle-contracts";
 
-contract("TreasurePool", function (accounts: string[]) {
+contract("TreasurePool", function ([deployer]) {
   const TreasureBayFactory = artifacts.require("TreasureBayFactory");
   const TreasureBay = artifacts.require("TreasureBay");
 
@@ -36,9 +36,9 @@ contract("TreasurePool", function (accounts: string[]) {
 
   it("create a pool successfully", async () => {
     await bay.createTreasureHunter();
-    let treasureHunter = await bay.treasureHunters(accounts[0]);
+    let treasureHunter = await bay.treasureHunters(deployer);
     assert(
-      (treasureHunter as any).contractAddress === accounts[0],
+      (treasureHunter as any).contractAddress === deployer,
       "treasureHunter info is not matched"
     );
     assert(
@@ -69,9 +69,9 @@ contract("TreasurePool", function (accounts: string[]) {
       "wrong staked number accumulated"
     );
 
-    let stakeHolder = await bay.stakeholders(accounts[0]);
+    let stakeHolder = await bay.stakeholders(deployer);
     assert(
-      (stakeHolder as any).contractAddress === accounts[0],
+      (stakeHolder as any).contractAddress === deployer,
       "stakeholder info is not matched"
     );
     assert(

@@ -1,4 +1,4 @@
-contract("TreasureBayFactory", function (accounts: string[]) {
+contract("TreasureBayFactory", function ([deployer]) {
   const TreasureBayFactory = artifacts.require("TreasureBayFactory");
   const TreasureBay = artifacts.require("TreasureBay");
 
@@ -30,13 +30,13 @@ contract("TreasureBayFactory", function (accounts: string[]) {
     assert(allBays.length > 0, "treasure bay is not created");
     let bay = await TreasureBay.at(allBays[0]);
     await bay.createTreasureHunter();
-    let treasureHunter = await bay.treasureHunters(accounts[0]);
+    let treasureHunter = await bay.treasureHunters(deployer);
     assert(
       (await bay.listOfTreasureHunters()).length === 1,
       "number of treasureHunters is not updated"
     );
     assert(
-      (treasureHunter as any).contractAddress === accounts[0],
+      (treasureHunter as any).contractAddress === deployer,
       "treasureHunter info is not matched"
     );
     assert(
