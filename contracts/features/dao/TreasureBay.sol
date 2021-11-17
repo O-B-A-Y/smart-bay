@@ -65,6 +65,16 @@ contract TreasureBay is
     return _listOfTreasureHunters;
   }
 
+  function leaveBay() public {
+    for (uint256 index = 0; index < _listOfTreasureHunters.length; index++) {
+      if (_listOfTreasureHunters[index].contractAddress == _msgSender()) {
+        _listOfTreasureHunters[index] = _listOfTreasureHunters[index + 1];
+        _listOfTreasureHunters.pop();
+      }
+    }
+    delete treasureHunters[_msgSender()];
+  }
+
   function createTreasureHunter() public returns (TreasureHunter memory) {
     require(
       _listOfTreasureHunters.length <= limitNumberOfTreasureHunters,

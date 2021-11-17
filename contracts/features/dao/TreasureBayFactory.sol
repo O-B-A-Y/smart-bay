@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import "./ITreasureBayFactory.sol";
 import "./TreasureBay.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract TreasureBayFactory is ITreasureBayFactory, Context {
+contract TreasureBayFactory is ITreasureBayFactory, Ownable {
   ITreasureBay[] private _listOfBays;
   mapping(address => ITreasureBay) _mapOfBays;
 
@@ -24,6 +24,16 @@ contract TreasureBayFactory is ITreasureBayFactory, Context {
 
     emit NewBayCreated(name_, _msgSender(), address(bay));
     return true;
+  }
+
+  function deleteBay(address bayAddress) external onlyOwner {
+    for (uint256 index = 0; index < _listOfBays.length; index++) {
+      if (address(_listOfBays[index]) == bayAddress) {
+        _listOfBays[index] = _listOfBays[index + 1];
+        _listOfBays.pop();
+      }
+    }
+    delete _mapOfBays[bayAddress];
   }
 
   function getAllBays() external view override returns (ITreasureBay[] memory) {

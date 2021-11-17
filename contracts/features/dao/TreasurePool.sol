@@ -78,12 +78,22 @@ contract TreasurePool is Context {
     payable(_msgSender()).transfer(msg.value);
     stakeholders[_msgSender()].balance += msg.value;
     if (stakeholders[_msgSender()].balance == 0) {
-      delete stakeholders[_msgSender()];
-      numberOfStakeholders -= 1;
-      emit RemoveStakeholder(_msgSender());
+      removeStakeholder(_msgSender());
     }
     totalStakedAmount -= msg.value;
     emit Unstake(_msgSender(), msg.value);
+  }
+
+  function removeStakeholder(address stakeholder) public {
+    for (uint256 index = 0; index < _listOfStakeholders.length; index++) {
+      if (_listOfStakeholders[index].contractAddress == _msgSender()) {
+        _listOfStakeholders[index] = _listOfStakeholders[index + 1];
+        _listOfStakeholders.pop();
+      }
+    }
+    delete stakeholders[stakeholder];
+    numberOfStakeholders -= 1;
+    emit RemoveStakeholder(stakeholder);
   }
 
   function claim() public payable isStakeholder {

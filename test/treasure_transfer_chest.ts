@@ -11,7 +11,6 @@ import {
  * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
  */
 contract("TreasureTransferChest", function ([deployer]) {
-  const TreasureTransferChest = artifacts.require("TreasureTransferChest");
   const TreasureBayFactory = artifacts.require("TreasureBayFactory");
   const TreasureBay = artifacts.require("TreasureBay");
   const TransferProposal = artifacts.require("TransferProposal");
@@ -21,7 +20,6 @@ contract("TreasureTransferChest", function ([deployer]) {
   let bay: TreasureBayInstance;
 
   before("initialized before running test", async () => {
-    treasureTransferChest = await TreasureTransferChest.deployed();
     treasureBayFactoryContract = await TreasureBayFactory.deployed();
 
     /** Create a new bay */
@@ -40,13 +38,12 @@ contract("TreasureTransferChest", function ([deployer]) {
   });
 
   it("should deploy smart contracts properly", async () => {
-    console.log(treasureTransferChest.address);
-    assert(treasureTransferChest.address !== "");
+    console.log(bay.address);
+    assert(bay.address !== "");
   });
 
   it("initialized chest", async () => {
-    let listOfTransferProposals =
-      await treasureTransferChest.getAllTransferProposals();
+    let listOfTransferProposals = await bay.getAllTransferProposals();
 
     assert(
       listOfTransferProposals.length === 0,

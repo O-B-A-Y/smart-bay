@@ -46,4 +46,29 @@ contract("TreasureBayFactory", function ([deployer]) {
     let bayName = await bay.name();
     assert(bayName === mockBayData.name, "treasure bay name is not matched");
   });
+
+  it("delete a bay successfully", async () => {
+    let instance = await TreasureBayFactory.deployed();
+    const mockBayData = {
+      name: "Binance",
+      limitStakeHolders: 200,
+      limitTreasureHunters: 300,
+    };
+    await instance.createNewBay(
+      mockBayData.name,
+      mockBayData.limitStakeHolders,
+      mockBayData.limitTreasureHunters
+    );
+    let allBays = await instance.getAllBays();
+    assert(allBays.length > 0, "treasure bay is not created");
+    console.log(allBays);
+    await instance.deleteBay(allBays[0]);
+
+    let postDeletedBays = await instance.getAllBays();
+    console.log(postDeletedBays);
+    assert(
+      postDeletedBays.length === allBays.length - 1,
+      "treasure bay is not deleted"
+    );
+  });
 });
