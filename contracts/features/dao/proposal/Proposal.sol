@@ -25,6 +25,7 @@ abstract contract Proposal is Ownable {
   uint64 public numberOfYesVote;
   mapping(address => bool) public votedNo;
   uint64 public numberOfNoVote;
+  uint256 public createdAt;
 
   event ProposalClosed(address indexed proposalAddress, uint256 timestamp);
   event ProposalVoted(
@@ -46,6 +47,7 @@ abstract contract Proposal is Ownable {
     votingDeadline = _debatingPeriod;
     open = Status.ON;
     proposalPassed = false;
+    createdAt = block.timestamp;
   }
 
   function checkApprovalStatus()

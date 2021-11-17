@@ -20,13 +20,14 @@ contract TreasureBay is
     address contractAddress;
     uint256 joinedAt;
   }
-  string private _name;
-  address private _creator;
-  uint64 private _limitNumberOfTreasureHunters;
+  string public name;
+  address public creator;
+  uint64 public limitNumberOfTreasureHunters;
   TreasureHunter[] private _listOfTreasureHunters;
   mapping(address => TreasureHunter) public treasureHunters;
   bool private _isActivated = false; // If there are more than 3 members, activated
   mapping(address => bool) public allowedRecipients;
+  uint256 public createdAt;
 
   event NewTreasureHunter(address treasureHunter, uint256 timestamp);
 
@@ -49,21 +50,10 @@ contract TreasureBay is
     uint64 limitNumberOfTreasureHunters_
   ) payable ITreasureBay() {
     limitNumberOfStakeholders = limitNumberOfStakeholders_;
-    _limitNumberOfTreasureHunters = limitNumberOfTreasureHunters_;
-    _name = name_;
-    _creator = _msgSender();
-  }
-
-  function name() public view virtual returns (string memory) {
-    return _name;
-  }
-
-  function creator() public view virtual returns (address) {
-    return _creator;
-  }
-
-  function limitNumberOfTreasureHunters() public view virtual returns (uint64) {
-    return _limitNumberOfTreasureHunters;
+    limitNumberOfTreasureHunters = limitNumberOfTreasureHunters_;
+    name = name_;
+    creator = _msgSender();
+    createdAt = block.timestamp;
   }
 
   function listOfTreasureHunters()
@@ -77,7 +67,7 @@ contract TreasureBay is
 
   function createTreasureHunter() public returns (TreasureHunter memory) {
     require(
-      _listOfTreasureHunters.length <= _limitNumberOfTreasureHunters,
+      _listOfTreasureHunters.length <= limitNumberOfTreasureHunters,
       "surpass limit number of treasureHunters"
     );
     treasureHunters[_msgSender()] = TreasureHunter(
@@ -86,18 +76,13 @@ contract TreasureBay is
     );
     _listOfTreasureHunters.push(treasureHunters[_msgSender()]);
     if (_listOfTreasureHunters.length > 5) {
-      toggleIsActivated(true);
+      _isActivated = true;
     }
     emit NewTreasureHunter(
       treasureHunters[_msgSender()].contractAddress,
       block.timestamp
     );
     return treasureHunters[_msgSender()];
-  }
-
-  function toggleIsActivated(bool isActivated_) public returns (bool _success) {
-    _isActivated = isActivated_;
-    return true;
   }
 
   function createNewTransferProposal(

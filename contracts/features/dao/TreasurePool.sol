@@ -10,11 +10,10 @@ contract TreasurePool is Context {
     uint256 claimedInterval;
     uint256 joinedAt;
   }
+  Stakeholder[] private _listOfStakeholders;
   mapping(address => Stakeholder) public stakeholders;
-  Stakeholder[] public listOfStakeholders;
   uint64 public numberOfStakeholders;
   address public admin;
-  address public daoAddress;
   uint256 public totalStakedAmount;
   uint64 public limitNumberOfStakeholders;
   uint64 public totalNumberOfStakeholders;
@@ -48,7 +47,7 @@ contract TreasurePool is Context {
       block.timestamp + _defaultClaimedInterval,
       block.timestamp
     );
-    listOfStakeholders.push(stakeholders[_msgSender()]);
+    _listOfStakeholders.push(stakeholders[_msgSender()]);
     numberOfStakeholders += 1;
     emit NewStakeholder(stakeholders[_msgSender()].contractAddress);
     return stakeholders[_msgSender()];
@@ -96,12 +95,12 @@ contract TreasurePool is Context {
     // TODO Handle interest rate and claimable tokens
   }
 
-  // function listOfStakeholders()
-  //   public
-  //   view
-  //   virtual
-  //   returns (Stakeholder[] memory)
-  // {
-  //   return _listOfStakeholders;
-  // }
+  function listOfStakeholders()
+    public
+    view
+    virtual
+    returns (Stakeholder[] memory)
+  {
+    return _listOfStakeholders;
+  }
 }

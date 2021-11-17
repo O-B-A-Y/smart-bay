@@ -18,5 +18,5 @@ interface ITreasureBay {
   //   external
   //   returns (bool _success);
 
-  function toggleIsActivated(bool isActivated) external returns (bool _success);
+  // function toggleIsActivated(bool isActivated) external returns (bool _success);
 }
