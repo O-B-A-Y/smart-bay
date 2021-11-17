@@ -65,7 +65,7 @@ contract TreasureBay is
     return _listOfTreasureHunters;
   }
 
-  function leaveBay() public {
+  function leaveBay() public onlyTreasureHunter {
     for (uint256 index = 0; index < _listOfTreasureHunters.length; index++) {
       if (_listOfTreasureHunters[index].contractAddress == _msgSender()) {
         _listOfTreasureHunters[index] = _listOfTreasureHunters[index + 1];

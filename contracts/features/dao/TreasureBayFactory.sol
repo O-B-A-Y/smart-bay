@@ -26,7 +26,7 @@ contract TreasureBayFactory is ITreasureBayFactory, Ownable {
     return true;
   }
 
-  function deleteBay(address bayAddress) external onlyOwner {
+  function deleteBay(address bayAddress) external {
     for (uint256 index = 0; index < _listOfBays.length; index++) {
       if (address(_listOfBays[index]) == bayAddress) {
         _listOfBays[index] = _listOfBays[index + 1];
