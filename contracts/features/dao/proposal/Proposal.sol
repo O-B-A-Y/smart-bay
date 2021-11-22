@@ -10,11 +10,18 @@ abstract contract Proposal is Ownable {
     TRANSFER
   }
 
+  struct Voter {
+    address voterAddress;
+    uint256 votedAt;
+    bool approved;
+  }
+
   enum Status {
     ON,
     OFF
   }
 
+  Voter[] private _voters;
   address public creator; // Address of the shareholder who created the proposal
   string public description; // A plain text description of the proposal
   string public title;
@@ -50,6 +57,10 @@ abstract contract Proposal is Ownable {
     createdAt = block.timestamp;
   }
 
+  function getVoters() external view returns (Voter[] memory) {
+    return _voters;
+  }
+
   function checkApprovalStatus()
     external
     view
@@ -75,6 +86,7 @@ abstract contract Proposal is Ownable {
   function voteYes() public {
     require(_checkIsNotVoted(), "the address has voted already");
     votedYes[_msgSender()] = true;
+    _voters.push(Voter(_msgSender(), block.timestamp, true));
     numberOfYesVote += 1;
     emit ProposalVoted(address(this), msg.sender, true);
   }
@@ -82,6 +94,7 @@ abstract contract Proposal is Ownable {
   function voteNo() public {
     require(_checkIsNotVoted(), "the address has voted already");
     votedNo[_msgSender()] = true;
+    _voters.push(Voter(_msgSender(), block.timestamp, false));
     numberOfNoVote += 1;
     emit ProposalVoted(address(this), msg.sender, true);
   }

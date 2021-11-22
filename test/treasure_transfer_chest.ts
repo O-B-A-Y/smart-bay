@@ -168,6 +168,9 @@ contract("TreasureTransferChest", function ([deployer]) {
       numberOfNoVote == "0.000000000000000001",
       "number of no votes is wrong"
     );
+
+    const voters = await proposal.getVoters();
+    assert(voters.length == 2, "wrong length of voters array");
   });
 
   it("execute transfer proposal", () => {});
