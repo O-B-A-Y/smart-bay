@@ -3,7 +3,7 @@ pragma solidity >=0.4.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-abstract contract Proposal is Ownable {
+contract Proposal is Ownable {
   // EXCHANGE : 1, TRANSFER : 2
   enum ProposalType {
     EXCHANGE,

@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ObayToken is ERC20("ObayToken", "OBAY"), Ownable {
   constructor() {
-    _mint(msg.sender, 1 ether);
+    _mint(msg.sender, 100 ether);
   }
 
-  function getTokenAddress() public view returns(address){
-      return address(this);
+  function getTokenAddress() public view returns (address) {
+    return address(this);
   }
 
   /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (Bayer).
