@@ -97,7 +97,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.0;\n\nimport \"./ITreasureBay.sol\";\n\ninterface ITreasureBayFactory {\n  // Require to  create a HD Wallet first before create a DAO\n  event NewBayCreated(\n    string indexed name,\n    address indexed creator,\n    address indexed bayAddress\n  );\n\n  function createNewBay(\n    string memory name_,\n    uint64 limitNumberOfMembers_,\n    uint64 limitNumberOfTreasureHunters_\n  ) external returns (bool);\n\n  function getAllBays() external returns (ITreasureBay[] memory);\n\n  function getBay(address bayAddress) external view returns (ITreasureBay);\n}\n",
-  "sourcePath": "/Users/chungquantin/Desktop/Projects/DecentralizedOpenSource/smart-bay/contracts/features/dao/ITreasureBayFactory.sol",
+  "sourcePath": "D:\\O-B-A-Y\\smart-bay\\contracts\\features\\dao\\ITreasureBayFactory.sol",
   "ast": {
     "absolutePath": "project:/contracts/features/dao/ITreasureBayFactory.sol",
     "exportedSymbols": {
@@ -1024,7 +1024,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T03:48:32.064Z",
+  "updatedAt": "2021-11-23T05:06:16.669Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
