@@ -67,7 +67,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.0;\n\ninterface ITreasureBay {\n  event ProposalAdded(\n    uint256 indexed proposalID,\n    address recipient,\n    uint256 amount,\n    string description\n  );\n  event Voted(uint256 indexed proposalID, bool position, address indexed voter);\n\n  // function executeProposal(uint256 _proposalID, bytes memory _transactionData)\n  //   external\n  //   returns (bool _success);\n\n  // function changeAllowedRecipients(address _recipient, bool _allowed)\n  //   external\n  //   returns (bool _success);\n\n  // function toggleIsActivated(bool isActivated) external returns (bool _success);\n}\n",
-  "sourcePath": "/Users/chungquantin/Desktop/Projects/DecentralizedOpenSource/smart-bay/contracts/features/dao/ITreasureBay.sol",
+  "sourcePath": "D:\\O-B-A-Y\\smart-bay\\contracts\\features\\dao\\ITreasureBay.sol",
   "ast": {
     "absolutePath": "project:/contracts/features/dao/ITreasureBay.sol",
     "exportedSymbols": {
@@ -620,7 +620,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T03:48:32.063Z",
+  "updatedAt": "2021-11-23T05:11:02.465Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
