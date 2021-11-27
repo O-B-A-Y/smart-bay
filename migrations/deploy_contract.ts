@@ -34,5 +34,15 @@ module.exports = (artifacts: Truffle.Artifacts, _: Web3) => {
     console.log(
       `TreasureBayFactory is deployed at ${treasureBayFactory.address} in network: ${network}`
     );
+
+    const ObayToken = artifacts.require("ObayToken");
+
+    await deployer.deploy(ObayToken);
+    const token = await ObayToken.deployed();
+    await token.mint(ObayTreasury.address, "1000000000");
+
+    console.log(
+      `ObayToken is deployed at ${token.address} in network: ${network}`
+    );
   };
 };

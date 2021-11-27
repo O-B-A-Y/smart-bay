@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.2.2",
     "@openzeppelin/contracts": "^4.3.2",
     "@remix-project/remixd": "^0.5.2",
     "@truffle/hdwallet-provider": "^1.5.1",
@@ -18,6 +19,7 @@
     "ethers": "^5.5.1",
     "moment": "^2.29.1",
     "truffle-contract-size": "^2.0.1",
+    "truffle-flatten": "^1.0.8",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
     "web3": "^1.6.0"

@@ -7,6 +7,7 @@ import "./proposal/ExchangeProposal.sol";
 import "./proposal/TransferProposal.sol";
 import "./proposal/TreasureExchangeChest.sol";
 import "./proposal/TreasureTransferChest.sol";
+import "./proposal/TreasureWoodyChest.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -14,7 +15,8 @@ contract TreasureBay is
   ITreasureBay,
   TreasurePool,
   TreasureTransferChest,
-  TreasureExchangeChest
+  TreasureExchangeChest,
+  TreasureWoodyChest
 {
   struct TreasureHunter {
     address contractAddress;
