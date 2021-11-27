@@ -4,6 +4,7 @@
 node_modules
 # truffle
 build
+./build
 
 # typechain
 types
